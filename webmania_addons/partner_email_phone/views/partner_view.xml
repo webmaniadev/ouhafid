@@ -5,10 +5,28 @@
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="base.view_partner_form"/>
         <field name="arch" type="xml">
+            <!-- Modification des champs existants -->
             <field name="phone" position="attributes">
                 <attribute name="required">1</attribute>
             </field>
             <field name="email" position="attributes">
+                <attribute name="required">1</attribute>
+            </field>
+
+            <!-- Ajout des nouveaux champs -->
+            <field name="mobile" position="attributes">
+                <attribute name="required">1</attribute>
+            </field>
+            <field name="street" position="attributes">
+                <attribute name="required">1</attribute>
+            </field>
+            <field name="city" position="attributes">
+                <attribute name="required">1</attribute>
+            </field>
+            <field name="country_id" position="attributes">
+                <attribute name="required">1</attribute>
+            </field>
+            <field name="zip" position="attributes">
                 <attribute name="required">1</attribute>
             </field>
         </field>
