@@ -1,0 +1,3 @@
+[submodule "extra_addons"]
+	path = extra_addons
+	url = git@github.com:webmania-ma/odoo_v15.git
