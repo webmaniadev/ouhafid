@@ -10,7 +10,7 @@
                    <field name="hrsft_rc" attrs="{'invisible':[('is_company','=',False)]}"/>
                    <field name="hrsft_if" attrs="{'invisible':[('is_company','=',False)]}"/>
                    <field name="hrsft_patente" attrs="{'invisible':[('is_company','=',False)]}"/>
-                   <field name="hrsft_ice" attrs="{'invisible':[('is_company','=',False)]}"/>
+                   <field name="hrsft_ice" attrs="{'invisible':[('is_company','=',False)], 'required': [('is_company', '=', True)]}"/>
                 </field>    
             </field>
         </record>
