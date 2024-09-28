@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+            <record id="knk_view_account_payment_form" model="ir.ui.view">
+            <field name="name">knk.account.payment.form</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="sale_id" />
+                </xpath>
+                <xpath expr="//field[@name='partner_bank_id']" position="after">
+                     <field name="journal_type" invisible="1"/>
+                     <field name="operation_type" attrs="{'required':[('journal_type', '=', 'bank')],'invisible':[('journal_type', '!=', 'bank')]}"/>
+                     <field name="operation_number" attrs="{'invisible':[('journal_type', '!=', 'bank')]}"/>
+                     <field name="operation_date" attrs="{'invisible':[('journal_type', '!=', 'bank')]}"/>
+                </xpath>
+
+
+
+<!--                <xpath expr="//div[@name='button_box']" position="inside">-->
+<!--                    <button name="action_view_saleorder" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('sale_count','=', 0)]}">-->
+<!--                        <field name="sale_count" widget="statinfo" string="SaleOrder"/>-->
+<!--                    </button>-->
+<!--                </xpath>-->
+            </field>
+        </record>
+
+
+        <record id="action_account_payments" model="ir.actions.act_window">
+            <field name="name">Payments</field>
+            <field name="res_model">account.payment</field>
+            <field name="view_mode">tree,kanban,form,graph</field>
+            <field name="context">{
+                'default_payment_type': 'inbound',
+                'default_partner_type': 'customer',
+                'search_default_inbound_filter': 1,
+                'default_move_journal_types': ('bank', 'cash'),
+                'do_not_unlink_payment': 1,
+            }</field>
+            <field name="view_id" ref="account.view_account_payment_tree"/>
+        </record>
+
+    </data>
+</odoo>

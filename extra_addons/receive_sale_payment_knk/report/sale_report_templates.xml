@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+
+	<template id="report_saleorder_document" inherit_id="sale.report_saleorder_document">
+       <xpath expr="//div[@name='signature']" position="after">
+           <t t-set="sale_payment_ids" t-value="doc.sale_payment_ids.filtered(lambda l: l.state != 'cancel')"/>
+            <div t-if="sale_payment_ids">
+                <h4 name="h_optional_products">
+                    <span>Payments</span>
+                </h4>
+                <table name="table_optional_products" class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th name="pay_date" class="text-left">Date</th>
+                            <th name="pay_description" class="text-left">Description</th>
+                            <th name="pay_amount"  class="text-left">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody class="sale_tbody">
+                        <tr t-foreach="sale_payment_ids" t-as="payment">
+                            <td >
+                                <span t-field="payment.date"/>
+                            </td>
+                             <td >
+                                 <t t-if="payment.journal_type == 'bank'">
+                                     <span t-field="payment.operation_type"/> <t t-if="payment.operation_type"> * </t>
+                                     <span t-field="payment.operation_number"/><t t-if="payment.operation_number"> * </t>
+                                     <span t-field="payment.operation_date"/>
+                                 </t>
+                                 <t t-if="payment.journal_type != 'bank'">
+                                     <span t-field="payment.name"/>
+                                 </t>
+                            </td>
+
+                            <td name="td_option_price_unit">
+                                <strong class="text-right">
+                                    <div t-field="payment.amount" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: doc.pricelist_id.currency_id}"  />
+                                </strong>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </xpath>
+        <xpath expr="//tr[hasclass('o_total')]" position="after">
+              <tr class="border-black o_total">
+                <td name="td_payment_amt_label"><strong>Payment Amount</strong></td>
+                <td name="td_payment_amt" class="text-right">
+                    <span t-field="doc.payment_amt" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: doc.currency_id}"/>
+                </td>
+             </tr>
+             <tr class="border-black o_total">
+                <td name="td_payment_amt_label"><strong>Remain paid</strong></td>
+                <td name="td_payment_amt" class="text-right">
+                    <span t-field="doc.remain_paid" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: doc.currency_id}"/>
+
+                </td>
+             </tr>
+        </xpath>
+    </template>
+
+</odoo>

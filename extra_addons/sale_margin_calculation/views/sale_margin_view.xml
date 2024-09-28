@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.ui.view" id="hook_mohammed_sale_margin">
+        <field name="name">sale.order.margin.view.form.hook.med</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale_margin.sale_margin_sale_order"/>
+        <field name="arch" type="xml">
+            <xpath expr="//span[@class='oe_inline']" position="replace">
+                <span class="oe_inline">
+                    <span class="oe_inline" >
+                        (<field name="margin_percent" nolabel="1" class="oe_inline" widget="percentage"/>)
+                    </span>
+                </span>
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="custom_sale_order_line_form">
+        <field name="name">sale.order.line.tree.margin.view.form.custom</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale_margin.sale_margin_sale_order_line_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='order_line']/tree//field[@name='margin_percent']" position="replace">
+                <!-- Modify the attrs attribute to adjust visibility condition -->
+                <field name="margin_percent"  widget="percentage"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

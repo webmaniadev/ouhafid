@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_account_payment_all,account_payment,account.model_account_payment,,1,0,0,0
+access_receive_sale_payment_all,access_receive_sale_payment,model_receive_sale_payment,,1,0,0,0
+access_receive_sale_payment,access_receive_sale_payment,model_receive_sale_payment,base.group_user,1,1,1,1
+access_account_payment_create_salereceive,account_payment,account.model_account_payment,receive_sale_payment_knk.group_enable_receive_payments,1,1,1,0
+access_account_move_create_salereceive,account_move,account.model_account_move,receive_sale_payment_knk.group_enable_receive_payments,1,1,1,0
+access_account_move_line_create_salereceive,account_move_line,account.model_account_move_line,receive_sale_payment_knk.group_enable_receive_payments,1,1,1,0
+access_ir_actions_act_window_all,ir.actions.act_window,base.model_ir_actions_act_window,,1,0,0,0
+access_ir_actions_act_window_view_all,ir.actions.act_window_view,base.model_ir_actions_act_window_view,,1,0,0,0

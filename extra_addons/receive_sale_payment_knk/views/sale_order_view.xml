@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <template id="assets_backend_inherit" name="account assets inherit" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" type="text/css" href="/receive_sale_payment_knk/static/src/css/overlay.css"/>
+            </xpath>
+        </template>
+
+        <record id="sale_order_form_quote" model="ir.ui.view">
+            <field name="name">sale.order.form.payment</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                   <button name="%(receive_sale_payment_knk.action_sale_payment_confirm)d" string="Receive Payment" class="oe_highlight" type="action" groups="receive_sale_payment_knk.group_enable_receive_payments" context="{'default_sale_id': active_id}" attrs="{'invisible': ['|', ('state', '=', 'draft'), ('state', '=', 'sent')]}"/>
+                </xpath>
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button name="action_view_payments" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('payment_amt','=', 0)]}" context="{'do_not_unlink_payment': True}">
+                        <div class="o_form_field o_stat_info">
+                                <span class="o_stat_value">
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="payment_amt" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                </span>
+                                <span class="o_stat_text">Payment Received</span>
+                            </div>
+                    </button>
+                </xpath>
+                <xpath expr="//field[@name='amount_total']" position="after">
+                        <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                            <label for="payment_amt"/>
+                        </div>
+                        <field name="payment_amt" nolabel="1" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+
+                        <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                            <label for="remain_paid"/>
+                        </div>
+                        <field name="remain_paid" nolabel="1" decoration-danger="remain_paid &gt;0" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                </xpath>
+            </field>
+        </record>
+
+
+         <record id="view_quotation_tree_with_onboarding" model="ir.ui.view">
+            <field name="name">sale.order.form.payment</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_quotation_tree_with_onboarding"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='invoice_status']" position="after">
+                       <field name="payment_amt" optional="show" />
+                       <field name="remain_paid" optional="show" decoration-danger="remain_paid &gt;0"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

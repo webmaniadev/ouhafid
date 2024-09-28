@@ -1,0 +1,39 @@
+
+0.Donner accès au groupe de sales pour poster les paiements depuis le devis
+
+1.Sur le wizard ajout de  boutton (visibilité Type journal banque):
+Checkbox:
+1.Chèque
+2.Effet
+3.Virement / Versement
+Affichage:
+Champ texte: Numéro (non obligatoite)
+date de remise:(non obligatoite)
+
+3/** def sale_payment_confirm(self): payment en brouillon
+
+4/Ne pas supprimer les paiements crées sauf pour les profils compatbilité
+
+
+
+5/Afficher le total payé et reste dans le form view et liste view + form view
+
+Sur la vue bon de commande afficher deux champs:
+Total payé : brouillon + posté
+Reste: totalbc - total payé (cloration reouge si reste !=0)
+
+
+6/Rapport bon de commande:
+
+Afficher les paiments recu en bas u rapport:
+Brouillon + posté
+Mode de paiement :
+Description:  Virement,.../ Numéro
+Total payé :
+Récap du rapport
+Total des paiements :
+Reste à payer:
+
+Mouad Revoir:
+
+Visualiser uniquement les factures clients depuis modules ventes (paiement résoudre le pb))

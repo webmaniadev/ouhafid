@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="wizard_sale_order_payment">
+            <field name="name">Sale order payment</field>
+            <field name="model">sale.order.payment</field>
+            
+            <field name="arch" type="xml">
+               
+                <form>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="memo" readonly="1"/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group class="group_left">
+                            <field name="payment_amount" />
+                            <field name="payment_date" />
+                        </group>
+                        <group class="group_right" >
+                            <field name="journal_id" />
+                            <field name="memo" />
+                        </group>
+                  
+                    </group>
+
+                    <footer>
+                        <button name="payment_validate" string="Valider" type="object" class="oe_highlight"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+
+    </data>
+</odoo>

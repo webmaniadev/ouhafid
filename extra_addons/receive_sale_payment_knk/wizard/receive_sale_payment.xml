@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="sale_payment_confirm_form_knk">
+            <field name="name">knk Sale Payment Confirm</field>
+            <field name="model">receive.sale.payment</field>
+            <field name="arch" type="xml">
+                <form string="create sale Payment">
+                    <group>
+                        <group name="group1">
+                            <field name="journal_id" required="1"/>
+                            <field name="ref"/>
+                            <field name="journal_type" invisible="1"/>
+                            <field name="operation_type" attrs="{'required':[('journal_type', '=', 'bank')],'invisible':[('journal_type', '!=', 'bank')]}"/>
+                            <field name="operation_number" attrs="{'invisible':[('journal_type', '!=', 'bank')]}"/>
+                            <field name="operation_date" attrs="{'invisible':[('journal_type', '!=', 'bank')]}"/>
+                        </group>
+                        <group name="group2">
+                            <label for="amount"/>
+                            <div name="amount_div" class="o_row">
+                                <field name="amount"/>
+                                <field name="currency_id"/>
+                            </div>
+                            <field name="date"/>
+                            <field name="partner_id" invisible="1" force_save="1" context="{'default_partner_id': active_id}"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button string="Receive Payment" name="sale_payment_confirm" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secodary" special="cancel"/>
+                    </footer>
+                </form>            
+            </field>
+        </record>
+        <record id="action_sale_payment_confirm" model="ir.actions.act_window">
+            <field name="name">Create Sale Payment</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">receive.sale.payment</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="sale_payment_confirm_form_knk"/>
+            <field name="target">new</field>
+        </record>
+    </data>
+</odoo>

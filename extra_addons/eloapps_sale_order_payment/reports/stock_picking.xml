@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <template id="report_stock_picking_valued" >
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                         <div class="page">
+                            <div class="row justify-content-end mb16">
+                                <div class="col-4" name="right_box">
+                                    <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', o.name, 600, 100)" style="width:300px;height:50px;" alt="Barcode"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6" name="div_outgoing_address">
+                                    <div t-if="o.move_ids_without_package and o.move_ids_without_package[0].partner_id and o.move_ids_without_package[0].partner_id.id != o.partner_id.id">
+                                        <span><strong>Delivery Address:</strong></span>
+                                        <div t-field="o.move_ids_without_package[0].partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;, &quot;phone&quot;], &quot;no_marker&quot;: True, &quot;phone_icons&quot;: True}"/>
+                                    </div>
+                                    <div t-if="o.picking_type_id.code != 'internal' and (not o.move_ids_without_package or not o.move_ids_without_package[0].partner_id) and o.picking_type_id.warehouse_id.partner_id">
+                                        <span><strong>Warehouse Address:</strong></span>
+                                        <div t-field="o.picking_type_id.warehouse_id.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;, &quot;phone&quot;], &quot;no_marker&quot;: True, &quot;phone_icons&quot;: True}"/>
+                                    </div>
+                                </div>
+                                <div class="col-5 offset-1" name="div_incoming_address">
+                                    <div t-if="o.picking_type_id.code=='incoming' and o.partner_id">
+                                        <span><strong>Vendor Address:</strong></span>
+                                    </div>
+                                    <div t-if="o.picking_type_id.code=='internal' and o.partner_id">
+                                        <span><strong>Warehouse Address:</strong></span>
+                                    </div>
+                                    <div t-if="o.picking_type_id.code=='outgoing' and o.partner_id">
+                                        <span><strong>Customer Address:</strong></span>
+                                    </div>
+                                    <div t-if="o.partner_id" name="partner_header">
+                                        <div t-field="o.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;name&quot;, &quot;phone&quot;], &quot;no_marker&quot;: True, &quot;phone_icons&quot;: True}"/>
+                                        <p t-if="o.sudo().partner_id.vat"><t t-esc="o.company_id.country_id.vat_label or 'Tax ID'"/>: <span t-field="o.sudo().partner_id.vat"/></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <br/>
+                            <h1 t-field="o.name" class="mt0 float-left"/>
+                            <div class="row mt48 mb32">
+                                <div t-if="o.origin" class="col-auto" name="div_origin">
+                                    <strong>Order:</strong>
+                                    <p t-field="o.origin"/>
+                                </div>
+                                <div class="col-auto" name="div_state">
+                                    <strong>Status:</strong>
+                                    <p t-field="o.state"/>
+                                </div>
+                                <div class="col-auto" name="div_sched_date">
+                                    <strong>Scheduled Date:</strong>
+                                    <p t-field="o.scheduled_date"/>
+                                </div>
+                            </div>
+                            <table class="table table-sm" t-if="o.move_line_ids and o.move_ids_without_package">
+                                <t t-set="has_barcode" t-value="any(move_line.product_id and move_line.product_id.sudo().barcode or move_line.package_id for move_line in o.move_line_ids)"/>
+                                <t t-set="has_serial_number" t-value="any(move_line.lot_id or move_line.lot_name for move_line in o.move_line_ids)" groups="stock.group_production_lot"/>
+                                <thead>
+                                    <tr>
+                                        <th name="th_product">
+                                            <strong>Product</strong>
+                                        </th>
+                                        <th>
+                                            <strong>Quantity</strong>
+                                        </th>
+                                         <th>
+                                            <strong>Prix unitaire</strong>
+                                        </th>
+                                         <th>
+                                            <strong>Taxes</strong>
+                                        </th>
+                                         <th>
+                                            <strong>Montant</strong>
+                                        </th>
+                                       
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-set="subtotal" t-value="0"/>
+                                   
+                                   
+                                    <t t-foreach="o.move_ids_without_package" t-as="move">
+                                        <!-- In case you come across duplicated lines, ask NIM or LAP -->
+                                        <t t-foreach="move.move_line_ids.sorted(key=lambda ml: ml.location_id.id)" t-as="ml">
+                                            <tr>
+
+                                                <td>
+                                                    <span t-field="ml.product_id.display_name"/><br/>
+                                                    <span t-field="ml.product_id.description_picking"/>
+                                                </td>
+                                                <td>
+                                                    <span t-if="o.state != 'done'" t-field="ml.product_uom_qty"/>
+                                                    <span t-if="o.state == 'done'" t-field="ml.qty_done"/>
+                                                    <span t-field="ml.product_uom_id" groups="uom.group_uom"/>
+
+                                                </td>
+                                                <td>
+                                                    <t t-set="price" t-value="move.sale_line_id.price_unit"/>
+                                                    <span t-esc="'%.2f'%price"/>
+                                                </td>
+                                                <td>
+
+
+
+                                                    <!--################ TAXES PART ##################-->
+                                                   <t t-if="ml.product_id == move.sale_line_id.product_id and move.quantity_done == move.sale_line_id.qty_delivered">
+                                                    <t t-foreach="move.sale_line_id.tax_id" t-as="taxy">
+
+                                                        <span t-field="taxy.description"/>,
+                                                    </t>
+                                                    </t>
+                                                    <!--##############################################-->
+                                                </td>
+                                                <td>
+
+                                                    <!-- <span t-if="o.state != 'done'" t-esc="ml.product_id.lst_price * ml.product_uom_qty"/>
+                                                    <span t-if="o.state == 'done'" t-esc="ml.product_id.lst_price * ml.qty_done"/> -->
+
+                                                    <t t-set="t_price" t-value="price * ml.qty_done"/>
+                                                    <span t-if="o.state == 'done'" t-esc="'%.2f'%t_price"/>
+                                                    <t t-set="t_price1" t-value="price * ml.product_uom_qty"/>
+                                                    <span t-if="o.state != 'done'" t-esc="'%.2f'%t_price1"/>
+                                                    <span t-esc="o.company_id.currency_id.name"/>  
+                                                </td>
+
+                                              <t t-if="o.state == 'done'" t-set="subtotal" t-value="subtotal + (price * ml.qty_done)" />
+                                              <t t-if="o.state != 'done'" t-set="subtotal" t-value="subtotal + (price * ml.product_uom_qty)" />
+                                 
+                                             
+                                            </tr>
+                                           
+                                        </t>
+                                    </t>
+                              
+                                  </tbody>
+                                </table>
+                                <div class="clearfix" name="so_total_summary">
+
+                                     <div id="total" class="row" name="total">
+                                        <div t-attf-class="#{'col-4' if report_type != 'html' else 'col-sm-7 col-md-5'} ml-auto">
+                                            <table class="table table-sm">
+                                                <tr class="border-black o_subtotal" style="">
+                                                    <td name="td_amount_untaxed_label"><strong>Sous-total</strong></td>
+                                                    <td name="td_amount_untaxed" class="text-right">
+                                                        <span t-esc="'%.2f'%subtotal"/>  <span t-esc="o.company_id.currency_id.name"/>
+                                                       
+                                                    </td>
+                                                </tr>
+                                                <t t-set="total_taxes" t-value="0"/>
+                                                <t t-if="o.state == 'done'">
+                                                    
+                                                    <t t-foreach="o.move_ids_without_package" t-as="move" >
+                                                    
+                                                        <t t-if="move.quantity_done != 0"> 
+                                                            <t t-set="total_taxes" t-value="total_taxes+ move.price_tax"/>
+                                                        </t>
+                                                    </t>
+                                                </t>
+                                                <t t-if="o.state == 'assigned'">
+                                                   
+                                                    <t t-foreach="o.move_ids_without_package" t-as="move" >
+                                                        <t t-set="total_taxes" t-value="total_taxes+ move.price_tax"/>
+
+                                                    </t>
+                                                </t>
+                                                
+                                                <tr class="o_tax" style="">
+                                                    <td name="td_amount_taxes">Taxes </td>
+                                                    <td name="td_amount_taxes" class="text-right">
+                                                            <span t-esc="'%.2f'%total_taxes" />  <span t-esc="o.company_id.currency_id.name"/>
+                                                       
+                                                    </td>
+                                                </tr>
+                                               
+                                                
+                                              
+
+                                                <!--#####################################################################-->
+                                                <t t-set="total" t-value="subtotal + total_taxes"/>
+                                                <tr class="border-black o_total">
+                                                    <td name="td_amount_total_label"><strong>Total</strong></td>
+                                                    <td name="td_amount_total" class="text-right">
+                                                        
+                                                        <span t-esc="'%.2f'%total"/>  <span t-esc="o.company_id.currency_id.name"/>
+                                                     
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <p class="col-xs-8 pull-left" name="montant" style="page-break-inside: always;">
+                                        <div>
+                                            <strong >Arrêtée le présent Bon de commande à la somme de:</strong>
+                                            
+                                            <p t-esc="o.env['account.move'].custom_amount_to_text(total)"/>
+                                        </div>
+                                    </p>
+                                    <br/>
+                                    <table style="width: 100%; height: 140px; padding-top:10px; padding-bottom:15px; padding-left:4px; page-break-before: auto;">
+                                        <tr>
+                                            <th style="border: 1px solid black; width:25%; font-size:13px;">
+                                                <p style="padding-top:5px; text-align:center;">
+                                                    Visa / Signature client: <br/> <strong class="list-inline-item" style="text-align:center;">Solde actuel: <span t-esc="total"/></strong>
+                                                </p>
+                                            </th>
+                                            <th style="width:50%;">
+                                            </th>
+                                            <th style="border: 1px solid black; width:25%; font-size:13px;">
+                                                <p style="text-decoration:underline;padding-top:5px; text-align:center;">
+                                                    Visa / Signature :
+                                                </p>
+                                            </th>
+                                        </tr>
+                                    </table>
+
+
+                                </div> 
+       
+                            
+                            </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+    </data>
+</odoo>

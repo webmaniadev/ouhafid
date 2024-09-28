@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_stock_picking">
+            <field name="name">stock picking</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="price" invisible="0"/>
+                   
+                </xpath>
+
+                <xpath expr="//button[@name='action_show_details']" position="before">
+                    <field name="price_tax" invisible="1"/>
+                   
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

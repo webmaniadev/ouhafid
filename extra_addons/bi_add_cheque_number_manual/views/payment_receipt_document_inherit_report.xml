@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<template id="report_payment_receipt_document_inherit" inherit_id="account.report_payment_receipt_document">
+        <xpath expr="//table[1]" position="before">
+        	<div style="margin-top:50px;">
+                <h5><b>Cheuqe Details :</b></h5>
+            </div>
+            <div class="row" style="margin-bottom:50px;">
+                <div class="col-6" t-if="o.cheq_num">
+                    <strong>Number : </strong><span t-field="o.cheq_num"/>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>

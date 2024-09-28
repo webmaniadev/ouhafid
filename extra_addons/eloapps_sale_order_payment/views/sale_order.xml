@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="form_sale_order_vente_paiement1">
+            <field name="name">sale.order.form.vente.paiement1</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='button_box']" position="before">
+                    <widget name="web_ribbon" title="Paid" attrs="{'invisible': ['|','|',('residual_amount', '!=', 0), ('etat_vente', '!=', 'paye'),('est_vente_detail','=',False)]}"/>
+                </xpath>
+
+                <xpath expr="//field[@name='amount_total']" position="after">
+                    <field name="etat_vente" attrs="{'invisible': [('est_vente_detail','=',False)]}" readonly="1"/>
+                    <field name="residual_amount" class="oe_subtotal_footer_separator" attrs="{'invisible': [('est_vente_detail','=',False)]}" readonly="1"/>
+
+                    <field name="move_name" invisible="1"/>
+                    <field name="reconciled" invisible="1"/>
+                </xpath>
+
+                <xpath expr="//group[@name='sale_info']" position="inside">
+                    <field name="move_id" attrs="{'invisible': [('est_vente_detail','=',False)]}"/>
+                    <field name="journal_id" attrs="{'invisible': [('est_vente_detail','=',False)]}"/>
+                </xpath>
+
+                <xpath expr="//field[@name='payment_term_id']" position="after">
+                    <field name="est_vente_detail"  attrs="{'readonly': [('state','in',['sale','done', 'cancel'])]}"/>
+                   
+                </xpath>
+
+                <xpath expr="//button[@name='action_quotation_send']" position="before">
+                    <button name="valider_vente"
+                            string="Validate the sale"
+
+                            type="object"
+                            class="btn-primary"
+                            attrs="{'invisible': ['|', '|', ('state', '!=', 'sale'), ('est_vente_detail','=',False), ('etat_vente','!=','en_attente')]}"/>
+
+                    <button name="action_register_payment"
+                            id="account_order_payment_btn"
+                            type="object"
+                            string="Register payment"
+                            class="oe_highlight"
+                            attrs="{'invisible': ['|', '|', '|', ('state', '!=', 'sale'), ('est_vente_detail','=',False), ('etat_vente','!=','ouvert'), ('reconciled','=',True)]}"
+                             />
+
+                    <button name="cree_facture_vente"
+                            string="Create a sale invoice"
+                            type="object"
+                            class="btn-primary"
+                            attrs="{'invisible': ['|', ('est_vente_detail','=',False), '|', ('etat_vente','=','en_attente'), ('invoice_count', '!=', 0)]}"/>
+                </xpath>
+
+                <xpath expr="//notebook" position="inside">
+                    <page name="reglements" string="Regulations" attrs="{'invisible': [('est_vente_detail','=',False)]}">
+                        <field name="payment_ids">
+                            <tree>
+                                <field name="date"/>
+                                <field name="move_id"/>
+                                <field name="ref"/>
+                                <field name="name"/>
+                                <field name="journal_id" groups="base.group_user"/>
+                                <field name="debit"/>
+                                <field name="credit"/>
+                                <field name="amount_currency" groups="base.group_multi_currency"/>
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="form_sale_order_vente_paiement2">
+            <field name="name">sale.order.form.vente.paiement2</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='%(sale.action_view_sale_advance_payment_inv)d'][1]" position="attributes">
+                    <attribute name="attrs">{'invisible': ['|', ('invoice_status', '!=', 'to invoice'), ('est_vente_detail','=',True)]}</attribute>
+                </xpath>
+                <xpath expr="//button[@name='%(sale.action_view_sale_advance_payment_inv)d'][2]" position="attributes">
+                    <attribute name="attrs">{'invisible': ['|', '|', ('invoice_status', '!=', 'no'), ('state', '!=', 'sale'), ('est_vente_detail','=',True)]}</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="quotation_tree_sale_order_vente_paiement1">
+            <field name="name">sale.order.tree.vente.paiement1.quotation</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_quotation_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="inside">
+                    <field name="est_vente_detail" string="Retail sales"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="tree_sale_order_vente_paiement1">
+            <field name="name">sale.order.tree.vente.paiement1</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="inside">
+                    <field name="est_vente_detail" string="Retail sales"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="filter_sale_order_vente_paiement1">
+            <field name="name">sale.order.filter.vente.paiement1</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//search" position="inside">
+                    <filter string="Retail" name="vente_detail"
+                        domain="[('est_vente_detail', '=', True)]"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_vente_detail_tree" model="ir.ui.view">
+            <field name="name">sale.order.tree</field>
+            <field name="model">sale.order</field>
+            <field name="priority">4</field>
+            <field name="arch" type="xml">
+                <tree string="Retail sales" class="o_sale_order">
+                    <field name="name" string="N° Order"/>
+                    <field name="date_order" string="Order date"/>
+                    <field name="commitment_date" string="Commitment date"/>
+                    <field name="partner_id"/>
+                    <field name="user_id"/>
+                    <field name="amount_total" sum="Total Tax Included" widget="monetary"/>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="etat_vente" optional="hide"/>
+                    <field name="residual_amount" sum="Total Residual" widget="monetary"/>
+                    <field name="payment_state_valued" widget="badge" decoration-danger="payment_state_valued == 'un_paid'" decoration-warning="payment_state_valued == 'partial_paid'" decoration-success="payment_state_valued == 'paid'"/>
+                    <field name="state" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_orders_detail" model="ir.actions.act_window">
+            <field name="name">Retail sales</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+
+            <field name="view_id" ref="view_vente_detail_tree"/>
+            <field name="view_mode">tree,kanban,form,calendar,pivot,graph</field>
+            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_sale"/>
+            <field name="context">{}</field>
+            <field name="domain">[('est_vente_detail', '=', True)]</field>
+        </record>
+
+        <menuitem id="menu_sale_order_detail"
+            name="Retail sales"
+            action="action_orders_detail"
+            parent="sale.sale_order_menu"
+            sequence="2"/>
+    </data>
+</odoo>

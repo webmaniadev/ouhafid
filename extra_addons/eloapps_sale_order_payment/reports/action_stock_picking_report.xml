@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data noupdate="0">
+
+    <!-- Bon de livraison valorisé -->
+    <report id="stock_valued"
+        model="stock.picking"
+        string="Bon de livraison valorisé"
+        report_type="qweb-pdf"
+        name="eloapps_sale_order_payment.report_stock_picking_valued"
+        file="eloapps_sale_order_payment.report_stock_picking_valued"
+        />
+    <!-- Bon de commande valorisé -->
+    <report id="sale_valued"
+        model="sale.order"
+        string="Bon de commande valorisé"
+        report_type="qweb-pdf"
+        name="eloapps_sale_order_payment.report_sale_order_valued"
+        file="eloapps_sale_order_payment.report_sale_order_valued"
+        menu="False"
+
+        />
+
+  </data>
+</odoo>

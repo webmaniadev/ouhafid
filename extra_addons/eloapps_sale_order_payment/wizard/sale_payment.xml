@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="wizard_sale_payment">
+            <field name="name">invoice order</field>
+            <field name="model">sale.advance.payment.inv</field>
+            <field name="inherit_id" ref="sale.view_sale_advance_payment_inv"/>
+            <field name="arch" type="xml">
+               
+
+                <xpath expr="//field[@name='advance_payment_method']" position ="replace">
+                    <field name="advance_payment_method" class="oe_inline" widget="radio" invisible="1"/>
+                </xpath> 
+                <xpath expr="//button[@name='create_invoices'][1]" position="replace">
+                    <button name="create_invoices" string="Validate" type="object"
+                            context="{'open_invoices': True}" class="btn-primary"/>
+                </xpath>
+                <xpath expr="//button[@name='create_invoices'][2]" position="replace">
+                    <button name="create_invoices" string="Create Invoice" type="object" invisible="1"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
