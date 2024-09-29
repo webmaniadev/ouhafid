@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="sale.view_quotation_tree"/>
         <field name="arch" type="xml">
             <xpath expr="//tree" position="attributes">
-                <attribute name="create">user.has_group('base.group_sale_manager')</attribute>
+                <attribute name="create">action_check_sale_order_creation()</attribute>
             </xpath>
         </field>
     </record>
