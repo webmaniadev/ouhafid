@@ -1,12 +1,12 @@
 
 <odoo>
-    <record id="view_sale_order_tree_inherit" model="ir.ui.view">
+   <record id="view_sale_order_tree_inherit" model="ir.ui.view">
         <field name="name">sale.order.tree.inherit</field>
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_tree"/>
         <field name="arch" type="xml">
             <xpath expr="//tree" position="attributes">
-                <attribute name="create">context.get('allow_sale_order_creation', True)</attribute>
+                <attribute name="create">user.has_group('base.group_sale_manager')</attribute>
             </xpath>
         </field>
     </record>
