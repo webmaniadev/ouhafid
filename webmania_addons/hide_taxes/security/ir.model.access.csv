@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hide_taxes_hide_taxes,hide_taxes.hide_taxes,model_hide_taxes_hide_taxes,base.group_user,1,1,1,1
