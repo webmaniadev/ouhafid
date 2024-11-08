@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
     <t t-name="OrderReceipt" t-inherit="point_of_sale.OrderReceipt" t-inherit-mode="extension" owl="1">
-        <xpath expr="//span[@t-esc='env.pos.format_currency(receipt.total_tax)']/.." position="replace">
-            <div></div>
-        </xpath>
-        <xpath expr="//span[@t-esc='env.pos.format_currency_no_symbol(tax.amount)']/.." position="replace">
-            <div></div>
-        </xpath>
+       <xpath expr="//t[@t-if='isTaxIncluded']" position="replace">
+           <div class="this-is-hiding-tva"></div>
+       </xpath>
     </t>
 </templates>
