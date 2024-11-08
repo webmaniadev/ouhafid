@@ -1,0 +1,19 @@
+Version 14.0.0.1 : (28-12-21)
+    - Update code for Analysis Report like profit, total profit, cost price , cost price unit.
+
+=> 14.0.0.2 : Improved an index as per latest improvements.
+
+
+Version 14.0.0.3 : (24-02-22)
+    - Call super method for Analysis report and solved employee related issue.
+    - Update code for the calculate margin used product price without taxes.
+
+Version 14.0.0.4 : (05-09-22)
+    -- Update code for the Analysis Report for the profit an total margin and cost price total
+
+Version 14.0.0.5 : (24-07-23)
+    *-  Improvement :
+        - added a user group, based on it we are shown the margin on products.
+        - also based on the user group we are shown the margin on pos orderline and pos_order.
+        
+=> 14.0.0.6 : Improved an index as per latest improvements.

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+		<record id="view_pos_pos_form_add_margin_field" model="ir.ui.view">
+		<field name="name">view.pos.pos.form.add.margin.field</field>
+		<field name="model">pos.order</field>
+		<field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+		<field name="arch" type="xml">
+			<group name="order_total" position="after">
+				<group>
+					<field name="margin" groups="bi_pos_margin.group_pos_margin"/>
+				</group>
+			</group>
+			<xpath expr="//field[@name='lines']/tree//field[@name='price_unit']" position="after">
+					<field name="purchase_price" groups="bi_pos_margin.group_pos_margin"/>
+					<field name="margin" groups="bi_pos_margin.group_pos_margin"/>
+			</xpath>
+			</field>
+		</record>
+
+		<record id="res_users_view_form" model="ir.ui.view">
+			<field name="name">res.users.form.view</field>
+			<field name="model">res.users</field>
+			<field name="inherit_id" ref="base.view_users_form" />
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='partner_id']" position="after">
+					<field name="print_margin_show" invisble="1" />
+				</xpath>
+			</field>
+		</record>
+
+		<record id="margin_product_form_view" model="ir.ui.view">
+			<field name="name">view.product.inherit.margin</field>
+			<field name="model">product.product</field>
+			<field name="inherit_id" ref="product.product_normal_form_view"/>
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='type']" position="after">
+					<lable for="product_margin" string="Product Margin" groups="bi_pos_margin.group_pos_margin"/>
+					<field name="product_margin" force_save="1" widget="monetary"
+								   	options="{'currency_field': 'currency_id', 'field_digits': True}"
+									groups="bi_pos_margin.group_pos_margin"	/>
+				</xpath>
+			</field>
+		</record>
+
+		<record id="margin_product_kanban_view" model="ir.ui.view">
+			<field name="name">view.product.inherit.kanban.margin</field>
+			<field name="model">product.product</field>
+			<field name="inherit_id" ref="product.product_kanban_view"/>
+			<field name="arch" type="xml">
+				<xpath expr="//ul" position="after">
+					<ul groups="bi_pos_margin.group_pos_margin">
+						<li><strong>Margin: <field name="product_margin" force_save="1" widget="monetary"
+									groups="bi_pos_margin.group_pos_margin"
+							   		options="{'currency_field': 'currency_id', 'field_digits': True}"/></strong></li>
+					</ul>
+				</xpath>
+			</field>
+		</record>
+
+		<record id="margin_product_template_kanban_view" model="ir.ui.view">
+			<field name="name">view.product.template.inherit.kanban.margin</field>
+			<field name="model">product.template</field>
+			<field name="inherit_id" ref="product.product_template_kanban_view"/>
+			<field name="arch" type="xml">
+				<xpath expr="//div[@name='product_lst_price']" position="after">
+					<div name="product_margin_price" class="mt-1" groups="bi_pos_margin.group_pos_margin">
+						Margin: <field name="bi_product_margin" widget="monetary"
+							   groups="bi_pos_margin.group_pos_margin"
+							   options="{'currency_field': 'currency_id', 'field_digits': True}"/>
+					</div>
+				</xpath>
+			</field>
+		</record>
+
+		<record id="margin_product_template_form_view" model="ir.ui.view">
+			<field name="name">view.product.template.inherit.form.margin</field>
+			<field name="model">product.template</field>
+			<field name="inherit_id" ref="product.product_template_only_form_view"/>
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='type']" position="after">
+					<field name="bi_product_margin" widget="monetary"
+						   groups="bi_pos_margin.group_pos_margin"
+						   options="{'currency_field': 'currency_id', 'field_digits': True}"/>
+				</xpath>
+			</field>
+		</record>
+
+    </data>
+</odoo>
+    

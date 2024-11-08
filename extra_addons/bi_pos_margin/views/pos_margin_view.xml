@@ -1,0 +1,12 @@
+<odoo>
+	<data>
+		<template id='assets_pos_margin_screen' name='pos_margin_sc' inherit_id='point_of_sale.assets'>
+			<xpath expr='.' position='inside'>
+				<script type='text/javascript' src='/bi_pos_margin/static/src/js/pos_margin.js'/>
+				<script type='text/javascript' src='/bi_pos_margin/static/src/js/models.js'/>
+				<script type='text/javascript' src='/bi_pos_margin/static/src/js/OrderWidgetMargin.js'/>
+				<link rel="stylesheet" href="/bi_pos_margin/static/src/css/pos_margin.css" id="pos-stylesheet-margin"/>
+			</xpath>
+		</template>
+	</data>
+</odoo>
