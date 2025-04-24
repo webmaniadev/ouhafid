@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    <record id="view_move_form_retention" model="ir.ui.view">
+        <field name="name">account.move.form.retention</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='amount_residual']" position="after">
+                    <field name="has_project" invisible="1"/>
+                    <field name="is_max_rg" invisible="1"/>
+                    <field name="cumulative_subtotal"   string="Total Facture HTVA" attrs="{'invisible': [('has_project', '=', False)]}"/>
+                    <field name="cumulative_tax" string="Montant de TVA de 20%" attrs="{'invisible': [('has_project', '=', False)]}"/>
+
+
+                    <field name="cumulative_total" string="Total Facture TTC" attrs="{'invisible': [('has_project', '=', False)]}"/>
+                    <field name="rg_report"
+                           string="Montant de la R.G 7% du marché TTC"
+                           attrs="{'invisible': ['|',  '|',('has_project', '=', False), ('rg_report', '=', 0), ('is_max_rg', '=', False)]}" />
+                    <!-- Then show the same field with a different label when condition is not met -->
+                    <field name="rg_report"
+                           string="Montant de la R.G TTC"
+                           attrs="{'invisible': ['|','|',('has_project', '=', False), ('rg_report', '=', 0), ('is_max_rg', '=', True)]}" />
+
+                    <field name="total_facture_ttc" string="Total TTC" attrs="{'invisible': ['|',('has_project', '=', False),('previous_invoice_total', '=', 0)]}" />
+                    <field name="previous_invoice_total" string="A déduire de la situation précédante" attrs="{'invisible': ['|',('has_project', '=', False),('previous_invoice_total', '=', 0)]}"/>
+                <field name="montant_rg_du" class="oe_subtotal_footer_separator" attrs="{'invisible': ['|',('has_project', '=', False),('montant_rg_du', '=', 0)]}" />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_invoice_tree_rg" model="ir.ui.view">
+        <field name="name">account.move.tree.montant.du.rg</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_invoice_tree"/>
+        <field name="arch" type="xml">
+            <!-- Add the montant_rg_du field - we'll place it after amount_residual which is the standard "Amount Due" field -->
+            <xpath expr="//field[@name='amount_residual_signed']" position="after">
+                <field name="montant_rg_du" sum="Total"/>
+            </xpath>
+        </field>
+    </record>
+    </data>
+</odoo>
+
+
+

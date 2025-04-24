@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="stock_picking_report_total" inherit_id="stock.report_picking">
+        <xpath expr="//p[@t-field='o.note']" position="before">
+            <div class="row mt-4">
+                <div class="col-6">
+                    <table class="table table-sm" style="page-break-inside: avoid;">
+                        <tbody>
+                            <tr>
+                                <td>Quantité totale:</td>
+                                <td class="text-right">
+                                    <span t-field="o.total_quantity_package"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>

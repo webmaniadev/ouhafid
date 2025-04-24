@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_order_form_inherit_rg" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.rg</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+
+        <xpath expr="//field[@name='payment_term_id']" position="after">
+                <field name="apply_rg_on_amount_total"/>
+        </xpath>
+        <xpath expr="//field[@name='payment_term_id']" position="after">
+           <field name="has_rg_invoice" invisible="1"/>
+        </xpath>
+            <xpath expr="//button[@name='action_quotation_send']" position="after">
+
+              <button name="action_create_rg_invoice"
+                        string="CRÉER FACTURE RG 7%"
+                        type="object"
+                        class="btn-primary"
+                       attrs="{'invisible': ['|', '|', ('has_rg_invoice', '=', True), ('analytic_account_id', '=', False), ('state', '!=', 'sale')]}"
+
+                        groups="account.group_account_invoice"/>
+                <button name="action_print_bordereau_realise"
+                            string="Imprimer Bordereau Réalisé"
+                            type="object"
+                            class="oe_highlight"
+                            attrs="{'invisible': [('invoice_count', '=', 0)]}"
+                            groups="account.group_account_invoice"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

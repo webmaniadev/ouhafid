@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--    This XML customization extends the assets block in the Point of Sale module by adding two JavaScript files.-->
+    <template id="assets" inherit_id="point_of_sale.assets">
+        <xpath expr="." position="inside">
+            <script type="text/javascript"
+                    src="/pos_restrict_product_stock/static/src/js/ProductScreen.js"/>
+            <script type="text/javascript"
+                    src="/pos_restrict_product_stock/static/src/js/RestrictStockPopup.js"/>
+            <link rel="stylesheet" type="text/css" href="/pos_restrict_product_stock/static/src/css/display_stock.css"/>
+
+        </xpath>
+    </template>
+</odoo>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="RestrictStockPopup" owl="1">
+        <div role="dialog" class="modal-dialog">
+            <div class="popup popup-alert" >
+                <header class="title">
+                 Avertissement : Rupture de Stock
+                </header>
+                <main class="body">
+
+                     <span style="color:#811331"><t t-esc="props.body"/></span> est en rupture de stock.
+                </main>
+                <footer class="footer">
+                    <div class="button confirm" t-on-click="orderProduct">
+                        Commander
+                    </div>
+                    <div class="button cancel" style="color:red" t-on-click="cancel">
+                        Annuler
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </t>
+</templates>

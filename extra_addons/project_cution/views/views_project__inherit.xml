@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <record id="edit_project_inherit_wm" model="ir.ui.view">
+        <field name="name">project.project.form.inherit</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[field[@name='partner_id']]" position="after">
+              <field name="currency_id" invisible="1" options="{'no_create': True}"/>
+                <group name="caution">
+                    <field name="caution_provisoire"/>
+                    <field name="caution_definitif"/>
+                    <field name="retenue_garantie"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+  </data>
+</odoo>

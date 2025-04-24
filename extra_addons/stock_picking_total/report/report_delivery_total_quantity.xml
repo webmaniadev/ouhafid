@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_delivery_document_total" inherit_id="stock.report_delivery_document">
+        <xpath expr="//div[@name='signature']" position="before">
+            <div class="row mt-4">
+                <div class="col-6">
+                    <table class="table table-sm" style="page-break-inside: avoid;">
+                        <tbody>
+                            <tr>
+                                <td>Quantité totale:</td>
+                                <td class="text-right">
+                                    <span t-field="o.total_quantity"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>

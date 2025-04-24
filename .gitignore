@@ -1,0 +1,10 @@
+odoo-server/
+.local/
+.idea/
+.env
+.cache/
+.ssh
+.bash_history
+.sudo_as_admin_successful
+.gitconfig
+.gitmodules

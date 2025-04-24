@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Create new security group -->
+    <record id="group_project_status" model="res.groups">
+        <field name="name">Autoriser le retour en arrière du statut du projet</field>
+        <field name="category_id" ref="base.module_category_project_management"/>
+        <field name="comment">Autoriser les utilisateurs à déplacer les projets vers des statuts précédents</field>
+    </record>
+</odoo>

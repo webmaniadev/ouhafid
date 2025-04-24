@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_project_kanban_inherited" model="ir.ui.view">
+        <field name="name">project.project.kanban.inherited</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.view_project_kanban"/>
+        <field name="arch" type="xml">
+            <!-- Replace just the o_project_kanban_boxes part -->
+            <xpath expr="//div[hasclass('o_project_kanban_boxes')]" position="replace">
+                <div class="o_project_kanban_boxes" style="position: relative;">
+                    <!-- Main box with edit action using position relative for layout -->
+                    <div class="o_project_kanban_box" style="position: relative;">
+                        <!-- The wrapper for task count and tasks label -->
+                        <div>
+                            <!-- Task count with edit action -->
+                            <a type="edit" style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;">
+                                <span style="display: block; width: 100%; height: 100%;"></span>
+                            </a>
+
+                            <!-- Task count with higher z-index -->
+                            <span class="o_value" style="position: relative; z-index: 2;"><t t-esc="record.task_count.value"/></span>
+
+                            <!-- Tasks link with even higher z-index to override parent's click action -->
+                            <a name="action_view_tasks" type="object" style="position: relative; z-index: 3;">
+                                <span class="o_label">Tâches</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Profitability box remains unchanged -->
+                    <a t-if="record.analytic_account_id.raw_value" class="o_project_kanban_box o_project_timesheet_box"
+                       name="action_view_account_analytic_line" type="object" groups="analytic.group_analytic_accounting">
+                        <div>
+                            <span class="o_label">Profitability</span>
+                        </div>
+                    </a>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

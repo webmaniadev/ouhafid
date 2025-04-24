@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="report_invoice_document_with_quantity" inherit_id="account.report_invoice_document">
+        <xpath expr="//div[@id='total']" position="before">
+           <div class="row mt-4">
+                <div class="col-12 text-right">
+                    <strong>Quantité totale: </strong>
+                    <span t-field="o.total_quantity"/>
+                </div>
+            </div>
+
+        </xpath>
+    </template>
+</odoo>
